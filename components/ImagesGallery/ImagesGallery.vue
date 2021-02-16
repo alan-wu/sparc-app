@@ -414,6 +414,8 @@ export default {
           break
         case 'flatmap':
           query = {
+            dataset_version: this.datasetVersion,
+            dataset_id: this.datasetId,
             taxo: imageInfo.taxo,
             uberonid: imageInfo.uberonid,
           }

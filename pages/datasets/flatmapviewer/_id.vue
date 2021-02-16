@@ -2,9 +2,7 @@
   <div class="flatmap-viewer-page">
     <div class="page-wrap container">
       <div class="subpage">
-        <div class="page-heading">
-          <h1>{{ fileName }}</h1>
-        </div>
+        <div class="page-heading" />
         <div class="file-detail">
           <strong class="file-detail__column">File Details</strong>
         </div>
@@ -98,7 +96,7 @@ export default {
      * @returns String
      */
     taxo: function() {
-      return this.$route.query.taxo;
+      return this.$route.query.taxo
     },
 
     /**
@@ -106,7 +104,7 @@ export default {
      * @returns Number
      */
     uberonid: function() {
-      return this.$route.query.uberonid;
+      return this.$route.query.uberonid
     },
 
      /**

@@ -309,9 +309,9 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
     }
 
     let flatmapData = [{}]
-    discover.metaData(datasetId, version).then(response => {
-      response.data.keywords  
-        .forEach(key => {
+    discover
+      .metaData(datasetId, version).then(response => {
+        response.data.keywords.forEach(key => {
           for (let term in Uberons.species) {
             if (term === key.toLowerCase()){
               flatmapData[0].taxo = Uberons.species[term]
@@ -326,7 +326,7 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       })
       .catch(error => {
         console.log(error.message)
-    })
+      })
 
     // This data can be found via scicrunch. Currently is hardcoded while waiting for
     // ImageGallery.vue to start making scicrunch calls
