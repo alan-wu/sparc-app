@@ -356,7 +356,7 @@ export default {
       const metadataFileIndex = imageInfoKeys.indexOf('metadata_file')
       const plotFileIndex = imageInfoKeys.indexOf('plot_file') 
       const videoFileIndex = imageInfoKeys.indexOf('file_path')
-      const flatmapIndex = imageInfoKeys.indexOf('taxo') 
+      const flatmapIndex = imageInfoKeys.indexOf('uberonid') 
       let imageType = 'unknown'
       if (shareLinkIndex !== -1) {
         imageType = 'biolucida'
