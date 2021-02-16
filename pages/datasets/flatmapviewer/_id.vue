@@ -15,6 +15,18 @@
           </div>
         </div>
         <div class="file-detail">
+          <strong class="file-detail__column">taxo</strong>
+          <div class="file-detail__column">
+            {{ taxo }}
+          </div>
+        </div>
+        <div class="file-detail">
+          <strong class="file-detail__column">uberon</strong>
+          <div class="file-detail__column">
+            {{ uberonid }}
+          </div>
+        </div>
+        <div class="file-detail">
           <strong class="file-detail__column">Dataset id</strong>
           <div class="file-detail__column">
             {{ datasetId }}
@@ -96,6 +108,22 @@ export default {
     uberonid: function() {
       return this.$route.query.uberonid;
     },
+
+     /**
+     * Return the dataset id from the route query.
+     * @returns String
+     */
+    datasetId: function() {
+      return this.$route.query.dataset_id
+    },
+
+    /**
+     * Return the version number from the route query.
+     * @returns String
+     */
+    versionNumber: function() {
+      return this.$route.query.dataset_version
+    }
   },
 }
 </script>

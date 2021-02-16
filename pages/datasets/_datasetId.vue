@@ -146,6 +146,7 @@
           :markdown="markdown.markdownTop"
           :dataset-images="imagesData.dataset_images"
           :dataset-scaffolds="scaffoldData"
+          :dataset-flatmaps="flatmapData"
           :dataset-plots="plotData"
           :dataset-videos="videoData"
           :dataset-version="getDatasetVersion"
@@ -185,6 +186,7 @@ import { getLicenseLink, getLicenseAbbr } from '@/static/js/license-util'
 import Scaffolds from '@/static/js/scaffolds.js'
 import Plots from '@/static/js/plots'
 import Videos from '@/static/js/videos'
+import Uberons from '@/static/js/uberon-map'
 
 import createClient from '@/plugins/contentful.js'
 
@@ -286,6 +288,7 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       version,
       'files/derivative'
     )
+    window.dddrep = derivativeFilesResponse
 
     // Include discover dataset version into images data info.
     imagesData['discover_dataset_version'] = version
@@ -307,6 +310,29 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       plotData = [plotData]
     }
 
+    var flatmapData = [{}]
+    discover.metaData(datasetId, version).then(response => {
+      console.log('in discover metadata')
+      window.mmeta_rep = response
+      response.data.keywords
+        .forEach(key => {
+          for (let term in Uberons.species) {
+            if (term === key.toLowerCase()){
+              flatmapData[0].taxo = Uberons.species[term]
+            }
+          }
+          for (let term in Uberons.anatomy) {
+            if (term === key.toLowerCase()) {
+              flatmapData[0].uberonid = Uberons.anatomy[term]
+            }
+          }
+        })
+      })
+      .catch(error => {
+        console.log(error.message)
+    })
+    console.log('flatmapData', flatmapData)
+
     // This data can be found via scicrunch. Currently is hardcoded while waiting for
     // ImageGallery.vue to start making scicrunch calls
     let videoData = Videos[datasetId]
@@ -318,17 +344,20 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       imagesData.status === 'success' ||
       scaffoldData.length ||
       plotData ||
-      videoData
+      videoData ||
+      flatmapData
     ) {
       tabsData.push({ label: 'Gallery', type: 'images' })
     }
+    window.flatmapData = flatmapData
 
     return {
       imagesData,
       scaffoldData,
       tabsData,
       plotData,
-      videoData
+      videoData,
+      flatmapData
     }
   } catch (error) {
     return {
@@ -336,7 +365,8 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       scaffoldData,
       tabsData,
       plotData: [],
-      videoData: []
+      videoData: [],
+      flatmapData: []
     }
   }
 }
@@ -374,7 +404,8 @@ export default {
       scaffoldData,
       tabsData,
       plotData,
-      videoData
+      videoData,
+      flatmapData
     } = await getImagesData(datasetId, datasetDetails, $axios)
 
     return {
@@ -385,6 +416,7 @@ export default {
       scaffoldData,
       plotData,
       videoData,
+      flatmapData,
       tabs: tabsData
     }
   },

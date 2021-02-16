@@ -133,7 +133,8 @@ export default {
       defaultImg: require('~/assets/logo-sparc-wave-primary.svg'),
       defaultScaffoldImg: require('~/assets/scaffold-light.png'),
       defaultPlotImg: require('~/assets/data-icon.png'),
-      defaultVideoImg: require('~/assets/video-default.png')
+      defaultVideoImg: require('~/assets/video-default.png'),
+      defaultFlatmapImg: require('~/assets/flatmap-thumbnail.png')
     }
   },
   computed: {
@@ -146,7 +147,7 @@ export default {
     imageCount() {
       return this.datasetImages.length + this.datasetScaffolds.length +
         this.datasetPlots.length + this.datasetVideos.length +
-        this.datasetFlatmaps.length;;
+        this.datasetFlatmaps.length;
     },
     numberOfImagesVisible() {
       const imagesVisibleCount =
@@ -213,6 +214,8 @@ export default {
       }
     },
     getThumbnails() {
+      window.dataset_id = this.datasetId
+      window.discover = discover
       this.thumbnails.clear
       this.slideAxis = undefined
       this.thumbnails = Array.from(this.datasetImages, (dataset_image) => {
@@ -303,6 +306,8 @@ export default {
             dataset_scaffold.path,
           )
           .then((response) => {
+            console.log('in discover')
+            window.drr_rep = response
             response.data.files.forEach((entry) => {
               if (entry.name.toUpperCase().includes('METADATA')) {
                 this.thumbnails[
@@ -324,6 +329,7 @@ export default {
       })
       for (let i in this.datasetFlatmaps) {
         this.thumbnails.push({
+          img: this.defaultFlatmapImg,
           id: this.datasetId,
           taxo: this.datasetFlatmaps[i].taxo,
           uberonid: this.datasetFlatmaps[i].uberonid,
@@ -416,6 +422,7 @@ export default {
             taxo: imageInfo.taxo,
             uberonid: imageInfo.uberonid,
           }
+          console.log('query', query)
           break
         case 'scaffold':
           query = {
