@@ -80,6 +80,12 @@ export default {
         return []
       },
     },
+    datasetFlatmaps: {
+      type: Array,
+      default: () => {
+        return [ {taxo: "NCBITaxon:10114", uberonid: "UBERON:0000948"}]
+      },
+    },
     datasetScaffolds: {
       type: Array,
       default: () => {
@@ -139,7 +145,8 @@ export default {
     },
     imageCount() {
       return this.datasetImages.length + this.datasetScaffolds.length +
-        this.datasetPlots.length + this.datasetVideos.length;
+        this.datasetPlots.length + this.datasetVideos.length +
+        this.datasetFlatmaps.length;;
     },
     numberOfImagesVisible() {
       const imagesVisibleCount =
@@ -315,6 +322,13 @@ export default {
             console.log(error.message)
           })
       })
+      for (let i in this.datasetFlatmaps) {
+        this.thumbnails.push({
+          id: this.datasetId,
+          taxo: this.datasetFlatmaps[i].taxo,
+          uberonid: this.datasetFlatmaps[i].uberonid,
+        })
+      }
       for (let i in this.datasetPlots) {
         this.thumbnails.push({
           id: this.datasetId,
@@ -341,7 +355,8 @@ export default {
       const shareLinkIndex = imageInfoKeys.indexOf('share_link')
       const metadataFileIndex = imageInfoKeys.indexOf('metadata_file')
       const plotFileIndex = imageInfoKeys.indexOf('plot_file') 
-      const videoFileIndex = imageInfoKeys.indexOf('file_path') 
+      const videoFileIndex = imageInfoKeys.indexOf('file_path')
+      const flatmapIndex = imageInfoKeys.indexOf('taxo') 
       let imageType = 'unknown'
       if (shareLinkIndex !== -1) {
         imageType = 'biolucida'
@@ -351,6 +366,8 @@ export default {
         imageType = 'plot'
       } else if (videoFileIndex !== -1) {
         imageType = 'video'
+      } else if (flatmapIndex !== -1) {
+        imageType = 'flatmap'
       }
       return imageType
     },
@@ -394,6 +411,12 @@ export default {
             dataset_id: this.datasetId,
           }
           break
+        case 'flatmap':
+          query = {
+            taxo: imageInfo.taxo,
+            uberonid: imageInfo.uberonid,
+          }
+          break
         case 'scaffold':
           query = {
             scaffold: imageInfo.metadata_file,
@@ -425,6 +448,9 @@ export default {
       switch (imageType) {
         case 'biolucida':
           name = 'datasets-imageviewer-id'
+          break
+        case 'flatmap':
+          name = 'datasets-flatmapviewer-id'
           break
         case 'scaffold':
           name = 'datasets-scaffoldviewer-id'
