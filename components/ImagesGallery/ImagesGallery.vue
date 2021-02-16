@@ -83,7 +83,7 @@ export default {
     datasetFlatmaps: {
       type: Array,
       default: () => {
-        return [ {taxo: "NCBITaxon:10114", uberonid: "UBERON:0000948"}]
+        return []
       },
     },
     datasetScaffolds: {
@@ -214,9 +214,6 @@ export default {
       }
     },
     getThumbnails() {
-      window.dataset_id = this.datasetId
-      window.discover = discover
-      this.thumbnails.clear
       this.slideAxis = undefined
       this.thumbnails = Array.from(this.datasetImages, (dataset_image) => {
         return {
@@ -306,8 +303,6 @@ export default {
             dataset_scaffold.path,
           )
           .then((response) => {
-            console.log('in discover')
-            window.drr_rep = response
             response.data.files.forEach((entry) => {
               if (entry.name.toUpperCase().includes('METADATA')) {
                 this.thumbnails[
@@ -327,12 +322,12 @@ export default {
             console.log(error.message)
           })
       })
-      for (let i in this.datasetFlatmaps) {
+      if (this.datasetFlatmaps.length > 0) {
         this.thumbnails.push({
           img: this.defaultFlatmapImg,
           id: this.datasetId,
-          taxo: this.datasetFlatmaps[i].taxo,
-          uberonid: this.datasetFlatmaps[i].uberonid,
+          taxo: this.datasetFlatmaps[0].taxo,
+          uberonid: this.datasetFlatmaps[0].uberonid,
         })
       }
       for (let i in this.datasetPlots) {
@@ -419,10 +414,11 @@ export default {
           break
         case 'flatmap':
           query = {
+            dataset_version: this.datasetVersion,
+            dataset_id: this.datasetId,
             taxo: imageInfo.taxo,
             uberonid: imageInfo.uberonid,
           }
-          console.log('query', query)
           break
         case 'scaffold':
           query = {

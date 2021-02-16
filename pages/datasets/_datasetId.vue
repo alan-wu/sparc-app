@@ -134,7 +134,6 @@
           :doi-value="datasetInfo.doi"
           :dataset-tags="datasetTags"
           :dataset-owner-name="datasetOwnerName"
-          :dataset-owner-email="datasetOwnerEmail"
           :external-publications="externalPublications"
         />
         <dataset-files-info
@@ -142,7 +141,7 @@
           :dataset-details="datasetInfo"
         />
         <images-gallery
-          v-show="activeTab === 'images'"
+          v-if="activeTab === 'images' && completedRequests"
           :markdown="markdown.markdownTop"
           :dataset-images="imagesData.dataset_images"
           :dataset-scaffolds="scaffoldData"
@@ -288,7 +287,6 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       version,
       'files/derivative'
     )
-    window.dddrep = derivativeFilesResponse
 
     // Include discover dataset version into images data info.
     imagesData['discover_dataset_version'] = version
@@ -310,12 +308,10 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       plotData = [plotData]
     }
 
-    var flatmapData = [{}]
-    discover.metaData(datasetId, version).then(response => {
-      console.log('in discover metadata')
-      window.mmeta_rep = response
-      response.data.keywords
-        .forEach(key => {
+    let flatmapData = [{}]
+    discover
+      .metaData(datasetId, version).then(response => {
+        response.data.keywords.forEach(key => {
           for (let term in Uberons.species) {
             if (term === key.toLowerCase()){
               flatmapData[0].taxo = Uberons.species[term]
@@ -330,8 +326,7 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
       })
       .catch(error => {
         console.log(error.message)
-    })
-    console.log('flatmapData', flatmapData)
+      })
 
     // This data can be found via scicrunch. Currently is hardcoded while waiting for
     // ImageGallery.vue to start making scicrunch calls
@@ -349,7 +344,6 @@ const getImagesData = async (datasetId, datasetDetails, $axios) => {
     ) {
       tabsData.push({ label: 'Gallery', type: 'images' })
     }
-    window.flatmapData = flatmapData
 
     return {
       imagesData,
@@ -417,7 +411,8 @@ export default {
       plotData,
       videoData,
       flatmapData,
-      tabs: tabsData
+      tabs: tabsData,
+      completedRequests: true
     }
   },
 
@@ -425,6 +420,7 @@ export default {
     return {
       showCopySuccess: false,
       isLoadingDataset: false,
+      completedRequests: false,
       errorLoading: false,
       loadingMarkdown: false,
       markdown: {},
