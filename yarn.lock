@@ -1984,10 +1984,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@dbrnz/flatmap-viewer@^0.9.34":
-  version "0.9.34"
-  resolved "https://registry.yarnpkg.com/@dbrnz/flatmap-viewer/-/flatmap-viewer-0.9.34.tgz#7dedd9aba3b861ffc1ca13df218d9e42dc543d15"
-  integrity sha512-qxGj8V4aqSjapFUuz+nlyDdPTb4bFVZzVDk1gD3zpRy0MetVl72NYTs8XUmca8TXaAz76En6XOe4PuP0Bt1NpQ==
+"@dbrnz/flatmap-viewer@^0.9.37":
+  version "0.9.37"
+  resolved "https://registry.yarnpkg.com/@dbrnz/flatmap-viewer/-/flatmap-viewer-0.9.37.tgz#ec07ff57454419af34e492d62a5e59b4b16bbb42"
+  integrity sha512-p31nJBDEq4NTC4prPZXadCYoDZVHq9llurOf8pkoJ/bDHqQ9LTEx3bhs1RhzS6nhk/7w437DFZoczGBPliH05g==
   dependencies:
     "@babel/runtime" "^7.10.4"
     "@comunica/actor-init-sparql" "^1.9.1"
