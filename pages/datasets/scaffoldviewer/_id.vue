@@ -37,7 +37,7 @@
 
           <div class="scaffoldvuer-container">
             <ScaffoldVuer  :displayMarkers="displayMarkers" :url="scaffoldUrl" :traditional="traditional" :backgroundToggle="backgroundToggle"/>
-            <SideBar class="sidebar" :visible="true" :tabs="contextCard" :activeId="0" :api-location="'http://localhost:8000/'"/> 
+            <SideBar class="sidebar" :visible="true" :tabs="contextCard" :activeId="0" :api-location="api"/> 
           </div>
         
         </client-only>
@@ -76,7 +76,8 @@ export default {
       file: {},
       traditional: true,
       displayMarkers: false,
-      backgroundToggle: true
+      backgroundToggle: true,
+      api: process.env.portal_api,
     }
   },
 
