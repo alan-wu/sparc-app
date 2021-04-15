@@ -37,9 +37,7 @@
 
           <div class="scaffoldvuer-container">
             <ScaffoldVuer  :displayMarkers="displayMarkers" :url="scaffoldUrl" :traditional="traditional" :backgroundToggle="backgroundToggle"/>
-           
-            
-              <SideBar class="sidebar" :visible="true" :api-location="'http://localhost:8000/'"/> 
+            <SideBar class="sidebar" :visible="true" :tabs="contextCard" :activeId="0" :api-location="'http://localhost:8000/'"/> 
           </div>
         
         </client-only>
@@ -51,6 +49,7 @@
 <script>
 // :scaffold-selected="scaffoldSelected"
 import DetailTabs from '@/components/DetailTabs/DetailTabs.vue'
+import scaffoldContext from './scaffold-context'
 
 export default {
   name: 'ScaffoldViewerPage',
@@ -124,6 +123,14 @@ export default {
     scaffoldUrl: function() {
       return `${process.env.portal_api}/s3-resource/${this.$route.query.scaffold}`
     },
+
+    contextCard: function(){
+      if (scaffoldContext[this.datasetId] !== undefined){
+        return [scaffoldContext[this.datasetId]]
+      } else {
+        return []
+      }
+    }
   },
 }
 </script>
