@@ -3,14 +3,14 @@
     <div class="files-table-header">
       <div class="breadcrumb-list">
         <div v-for="(item, idx) in breadcrumbs" :key="idx" class="breadcrumb">
-          <a
+          <nuxt-link
             class="breadcrumb-link"
-            href="#"
-            @click.prevent="breadcrumbNavigation(idx)"
+            :to="{
+              query: { ...$route.query, path: breadcrumbNavigation(idx) }
+            }"
           >
             {{ item }}
-          </a>
-
+          </nuxt-link>
           <span
             v-if="breadcrumbs.length > 1 && idx !== breadcrumbs.length - 1"
             class="breadcrumb-separator"
@@ -49,13 +49,12 @@
             <div class="file-name-wrap">
               <template v-if="scope.row.type === 'Directory'">
                 <i class="file-icon el-icon-folder" />
-                <a
+                <nuxt-link
                   class="file-name"
-                  href="#"
-                  @click.prevent="path = scope.row.path"
+                  :to="{ query: { ...$route.query, path: scope.row.path } }"
                 >
                   {{ scope.row.name }}
-                </a>
+                </nuxt-link>
               </template>
 
               <template v-else>
@@ -235,7 +234,8 @@ export default {
 
   data: function() {
     return {
-      path: '',
+      previousPath: '',
+      schemaRootPath: 'files',
       data: [],
       isLoading: false,
       hasError: false,
@@ -246,6 +246,16 @@ export default {
   },
 
   computed: {
+    /**
+     * Compute the current path for the dataset's files.
+     * @returns {String}
+     */
+    path: function() {
+      return this.$route.query.path
+        ? this.$route.query.path
+        : this.schemaRootPath
+    },
+
     breadcrumbs: function() {
       return compose(reject(isEmpty), split('/'))(this.path)
     },
@@ -256,12 +266,10 @@ export default {
      */
     getFilesurl: function() {
       const id = pathOr('', ['params', 'datasetId'], this.$route)
-      const version = propOr(1, 'version', this.datasetDetails)
+      const version = this.datasetVersion
       const url = `${process.env.bf_api_host}/discover/datasets/${id}/versions/${version}/files/browse`
 
-      return this.path
-        ? `${url}?path=${this.path}&limit=${this.limit}`
-        : `${url}?limit=${this.limit}`
+      return `${url}?path=${this.path}&limit=${this.limit}`
     },
 
     /**
@@ -270,8 +278,16 @@ export default {
      */
     getFilesIdUrl: function() {
       const id = pathOr('', ['params', 'datasetId'], this.$route)
-      const version = propOr(1, 'version', this.datasetDetails)
+      const version = this.datasetVersion
       return `${process.env.bf_api_host}/discover/datasets/${id}/versions/${version}`
+    },
+
+    /**
+     * Compute the version of this dataset.
+     * @returns {String}
+     */
+    datasetVersion: function() {
+      return propOr(1, 'version', this.datasetDetails)
     }
   },
 
@@ -283,13 +299,10 @@ export default {
       immediate: true
     },
 
-    path: {
-      handler: function(val) {
-        if (val !== '') {
-          this.getFiles()
-        }
-      },
-      immediate: true
+    $route() {
+      if (this.previousPath !== this.path) {
+        this.getFiles()
+      }
     }
   },
 
@@ -351,10 +364,9 @@ export default {
             response.blackfynnSchemaVersion
           )
           if (schemaVersion < 4.0) {
-            this.path = 'packages'
-          } else {
-            this.path = 'files'
+            this.schemaRootPath = 'packages'
           }
+          this.getFiles()
         })
         .catch(() => {
           this.hasError = true
@@ -385,6 +397,7 @@ export default {
     getFiles: function() {
       this.hasError = false
       this.isLoading = true
+      this.previousPath = this.path
 
       this.$axios
         .$get(this.getFilesurl)
@@ -406,7 +419,7 @@ export default {
     breadcrumbNavigation: function(idx) {
       const itemIdx = idx + 1
 
-      this.path = compose(join('/'), slice(0, itemIdx))(this.breadcrumbs)
+      return compose(join('/'), slice(0, itemIdx))(this.breadcrumbs)
     },
 
     /**
@@ -483,7 +496,7 @@ export default {
      */
     getScaffoldLink: function(scope) {
       const id = pathOr('', ['params', 'datasetId'], this.$route)
-      const version = propOr(1, 'version', this.datasetDetails)
+      const version = this.datasetVersion
       let s3Path = `${id}/${version}/${scope.row.path}`
       return {
         name: 'datasets-scaffoldviewer-id',

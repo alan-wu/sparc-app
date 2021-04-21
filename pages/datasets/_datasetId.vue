@@ -156,11 +156,7 @@
       />
     </div>
     <div v-if="datasetInfo.embargo === false" class="container">
-      <detail-tabs
-        :tabs="tabs"
-        :active-tab="activeTab"
-        @set-active-tab="setActiveTab"
-      >
+      <detail-tabs :tabs="tabs" :active-tab="activeTab">
         <dataset-description-info
           v-show="activeTab === 'description'"
           :markdown="markdown"
@@ -490,7 +486,7 @@ export default {
       errorLoading: false,
       loadingMarkdown: false,
       markdown: {},
-      activeTab: 'description',
+      activeTab: this.$route.query.tab ? this.$route.query.tab : 'description',
       datasetRecords: [],
       discover_host: process.env.discover_api_host,
       isContributorListVisible: true,
@@ -811,6 +807,17 @@ export default {
     }
   },
 
+  watchQuery(newQuery) {
+    this.activeTab = newQuery.tab ? newQuery.tab : this.activeTab
+    if (this.activeTab !== 'files') {
+      let query = newQuery
+      if ('path' in query) {
+        delete query['path']
+        this.$router.push({ query })
+      }
+    }
+  },
+
   watch: {
     /**
      * Watcher for getSearchRecordsUrl
@@ -856,13 +863,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Sets active tab
-     * @param {String} activeLabel
-     */
-    setActiveTab: function(activeLabel) {
-      this.activeTab = activeLabel
-    },
     /**
      * Returns protocol records in a dataset's model if they exist
      */
@@ -930,16 +930,7 @@ export default {
      * in the About tab
      */
     scrollToCitations: function() {
-      const aboutTabType = tabs[1].type
-      if (this.activeTab != aboutTabType) {
-        this.setActiveTab(aboutTabType)
-        this.$nextTick(() =>
-          // Wait until Vue renders the About tab
-          this.getCitationsArea().scrollIntoView()
-        )
-      } else {
-        this.getCitationsArea().scrollIntoView()
-      }
+      this.getCitationsArea().scrollIntoView()
     },
 
     /**
