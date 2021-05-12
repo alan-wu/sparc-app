@@ -34,8 +34,6 @@
         @set-active-tab="activeTab = $event"
       >
         <client-only placeholder="Loading scaffold ...">
-<<<<<<< HEAD
-
           <div class="viewer-container">
             <div class="scaffold-container">
               <div class="scaffold">
@@ -45,15 +43,6 @@
             <div class="sidebar-container">
               <SideBar class="side-bar" :visible="true" :tabs="contextCard" :activeId="0" :api-location="api"/> 
             </div>
-=======
-          <div class="scaffoldvuer-container">
-            <ScaffoldVuer
-              :display-markers="displayMarkers"
-              :url="scaffoldUrl"
-              :traditional="traditional"
-              :background-toggle="backgroundToggle"
-            />
->>>>>>> 41134eaf39ea57f1dc41e9c10bf5e21656467879
           </div>
         </client-only>
       </detail-tabs>
@@ -138,9 +127,7 @@ export default {
      */
     scaffoldUrl: function() {
       return `${process.env.portal_api}/s3-resource/${this.$route.query.scaffold}`
-<<<<<<< HEAD
     },
-
     contextCard: function(){
       if (scaffoldContext[this.datasetId] !== undefined){
         return [scaffoldContext[this.datasetId]]
@@ -149,10 +136,6 @@ export default {
       }
     }
   },
-=======
-    }
-  }
->>>>>>> 41134eaf39ea57f1dc41e9c10bf5e21656467879
 }
 </script>
 
