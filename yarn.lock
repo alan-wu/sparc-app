@@ -27,7 +27,7 @@
     minisearch "^2.2.1"
     n3 "^1.3.5"
 
-"@abi-software/flatmapvuer@^0.1.33":
+"@abi-software/flatmapvuer@^0.1.33-beta-1":
   version "0.1.33"
   resolved "https://registry.yarnpkg.com/@abi-software/flatmapvuer/-/flatmapvuer-0.1.33.tgz#b3b6b31b35e1fe411661b07e94e5dfd48193dbc9"
   integrity sha512-W6VJAXGclc9BGDKRzriMVaF9do4FqpzwP1b6I/mdZ/zbcgUorlwHwfCcvnm+uBjqK4o03KbeIbFNMyLufTzJ1g==
@@ -43,22 +43,22 @@
     lodash "^4.17.21"
     vue "^2.6.10"
 
-"@abi-software/map-side-bar@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@abi-software/map-side-bar/-/map-side-bar-1.0.11.tgz#1473a0146437ce6a1479b88c85b1bb4718984a37"
-  integrity sha512-3bI9W7D1jtbMYLwc7M4YiMI5K1cSGAzH7bBnKcnDNV3hBFOAFlEYR7m5rw2Rk8H5YTAaVP5vW+8KhnAv9PUkzQ==
+"@abi-software/map-side-bar@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@abi-software/map-side-bar/-/map-side-bar-1.0.12.tgz#85ea127a25af2547f4872af68146e3bc0eed3870"
+  integrity sha512-MKkZXLz3NfWvvOsDrHfcyzCukqoRdvVjlt0uzvZWmqf4fdquyIk6jlazOQmxTmCs2H3PnqTosTFaqD6Zui4WfA==
   dependencies:
     "@abi-software/svg-sprite" "^0.1.12"
     element-ui "^2.13.0"
     vue "^2.6.10"
 
-"@abi-software/mapintegratedvuer@0.1.31-fix-1":
-  version "0.1.31-fix-1"
-  resolved "https://registry.yarnpkg.com/@abi-software/mapintegratedvuer/-/mapintegratedvuer-0.1.31-fix-1.tgz#965312ed4e4d69109abe7bdac2e7986fbe0f804c"
-  integrity sha512-T2P3Ik4gevclRiiipx4S0JudB/gyPQWjesu+D34GN0oTGRPfaQvL+OOX1HGXRlnE6UGBEM8D3aTE7EWEawUVtQ==
+"@abi-software/mapintegratedvuer@0.1.32-markers-0":
+  version "0.1.32-markers-0"
+  resolved "https://registry.yarnpkg.com/@abi-software/mapintegratedvuer/-/mapintegratedvuer-0.1.32-markers-0.tgz#5364d5e1a36019e233e7646ac59ade34c57cd43f"
+  integrity sha512-Ja2QOcVCxDcQRF5jbvnhY5SERkxk6K5ASz2ahOmtbQwl98VQJRDUbIMeVt4RFOUoisEXwWmztMh0L47Q71P8Rw==
   dependencies:
-    "@abi-software/flatmapvuer" "^0.1.33"
-    "@abi-software/map-side-bar" "^1.0.11"
+    "@abi-software/flatmapvuer" "^0.1.33-beta-1"
+    "@abi-software/map-side-bar" "^1.0.12"
     "@abi-software/maptooltip" "^0.1.13"
     "@abi-software/plotvuer" "^0.2.41"
     "@abi-software/scaffoldvuer" "^0.1.48"
